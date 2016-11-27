@@ -19,6 +19,8 @@ grep 'github.com/trending?l' "${README}" | sort | \
     { echo ""; "${DIR}/trending" "${lang}"; echo ""; } >> "${OUTPUT_FILE_MD}"
 done
 
-git add "${OUTPUT_FILE_MD}" && \
-git add --update && \
-git commit -m "${TODAY}"
+if [ -n "$(git status --porcelain)" ]; then
+  git add "${OUTPUT_FILE_MD}" && \
+  git add --update && \
+  git commit -m "${TODAY}"
+fi
