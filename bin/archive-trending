@@ -31,5 +31,6 @@ grep 'github.com/trending?l' "${README}" | sort | \
 if [ -n "$(git status --porcelain)" ]; then
   git add "${OUTPUT_FILE_MD}" && \
   git add --update && \
-  git commit -m "${TODAY}"
+  git commit -m "${TODAY}" --quiet && \
+  git push --quiet
 fi
