@@ -5,19 +5,28 @@
 
 ROOT="$(git rev-parse --show-toplevel)"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-README="${DIR}/../README.md"
+VIRUAL_ENV_PATH="${DIR}/env"
+README="${ROOT}/README.md"
 TODAY=$(date +'%Y-%m-%d')
 WORK_DIR="${ROOT}/archive/$(date +'%Y-%m')"
 OUTPUT_FILE_MD="${WORK_DIR}/${TODAY}.md"
 
 mkdir -p "${WORK_DIR}"
 
+if [ ! -d "${VIRUAL_ENV_PATH}" ];
+then
+  virtualenv --quiet "${VIRUAL_ENV_PATH}"
+fi
+
+source "${VIRUAL_ENV_PATH}/bin/activate"
+
+pip install --quiet --requirement "${DIR}/requirements.txt"
+
+
 echo "###${TODAY}" > "${OUTPUT_FILE_MD}"
 grep 'github.com/trending?l' "${README}" | sort | \
-  cut -d '[' -f2 | cut -d ']' -f 1 | while read -r lang;
-  do
-    { echo ""; "${DIR}/trending" "${lang}"; echo ""; } >> "${OUTPUT_FILE_MD}"
-done
+  cut -d '[' -f2 | cut -d ']' -f 1 | tr '\n' ' ' | \
+    xargs python "${ROOT}/scrape_trending" >> "${OUTPUT_FILE_MD}"
 
 if [ -n "$(git status --porcelain)" ]; then
   git add "${OUTPUT_FILE_MD}" && \
