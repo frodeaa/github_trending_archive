@@ -3,6 +3,8 @@
 # Scrape trending repositories from GitHub
 #
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+VIRUAL_ENV_PATH="${DIR}/env"
 GITHUB_TRENDING="https://github.com/trending"
 T_LANG=
 
@@ -19,3 +21,15 @@ else
     T_LANG="$1"
 fi  
 
+if [ ! -d "${VIRUAL_ENV_PATH}" ];
+then
+  virtualenv --quiet "${VIRUAL_ENV_PATH}"
+fi
+
+source "${VIRUAL_ENV_PATH}/bin/activate"
+
+pip install --quiet --requirement "${DIR}/requirements.txt"
+
+echo "####${T_LANG}"
+curl --silent "${GITHUB_TRENDING}?l=${T_LANG}" |
+  python /Users/frode/workspace/github_trending_archive/scrape_trending

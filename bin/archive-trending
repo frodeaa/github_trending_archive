@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#
+# Archive GitHub Trending repositories
+#
+
+ROOT="$(git rev-parse --show-toplevel)"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+README="${DIR}/../README.md"
+TODAY=$(date +'%Y-%m-%d')
+WORK_DIR="${ROOT}/archive/$(date +'%Y-%m')"
+OUTPUT_FILE_MD="${WORK_DIR}/${TODAY}.md"
+
+mkdir -p "${WORK_DIR}"
+
+echo "###${TODAY}" > "${OUTPUT_FILE_MD}"
+grep 'github.com/trending?l' "${README}" | sort | \
+  cut -d '[' -f2 | cut -d ']' -f 1 | while read -r lang;
+  do
+    { echo ""; "${DIR}/trending" "${lang}"; echo ""; } >> "${OUTPUT_FILE_MD}"
+done
