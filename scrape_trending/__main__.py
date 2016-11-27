@@ -13,4 +13,4 @@ trending = [('https://github.com%s' % li.h3.a.get('href'),
             for li in items]
 
 for t in trending:
-    print((u'* [%s](%s): %s' % t).encode('utf-8'))
+    print((u'* [%s](%s): %s' % t).rstrip().encode('utf-8'))
