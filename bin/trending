@@ -32,4 +32,4 @@ pip install --quiet --requirement "${DIR}/requirements.txt"
 
 echo "####${T_LANG}"
 curl --silent "${GITHUB_TRENDING}?l=${T_LANG}" |
-  python /Users/frode/workspace/github_trending_archive/scrape_trending
+  python "${DIR}/../scrape_trending"

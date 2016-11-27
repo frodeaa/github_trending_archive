@@ -13,4 +13,4 @@ The repository follows:
 
 Add ``bin/archive-trending`` to your crontab.
 
-    crontab -l | { cat; echo "0 0 * * * $(pwd)/archive-trending"; } | crontab -
+    crontab -l | { cat; echo "0 0 * * * $(pwd)/bin/archive-trending"; } | crontab -
