@@ -18,3 +18,7 @@ grep 'github.com/trending?l' "${README}" | sort | \
   do
     { echo ""; "${DIR}/trending" "${lang}"; echo ""; } >> "${OUTPUT_FILE_MD}"
 done
+
+git add "${OUTPUT_FILE_MD}" && \
+git add --update && \
+git commit -m "${TODAY}"
