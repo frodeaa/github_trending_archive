@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+# Scrape trending repositories from GitHub
+#
+
+GITHUB_TRENDING="https://github.com/trending"
+T_LANG=
+
+read -r -d '' USAGE <<-'USAGE'
+usage:
+
+trending <language>
+USAGE
+
+if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ -z "$1" ]; 
+then 
+    echo "$USAGE"; exit;
+else
+    T_LANG="$1"
+fi  
+
