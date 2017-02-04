@@ -4,7 +4,7 @@ $def with (archives)
     <ul>
         $for project in projects:
         <li>
-            <a href="$project['url']">$project['title']</a>
-            $project['description']
+            <a href="$project['url']">$:project['title']</a>
+            $:project['description']
         </li>
     </ul>
