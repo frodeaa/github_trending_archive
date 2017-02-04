@@ -39,6 +39,8 @@ class Index(object):
         paths = self._archive_paths()
         date = datetime.datetime.strptime(
             paths[0].split('/')[-1], '%Y-%m-%d')
+        web.http.expires(
+            (date + datetime.timedelta(days=1)) - datetime.datetime.utcnow())
         web.http.modified(date=date)
         return render.index(paths)
 
@@ -71,6 +73,7 @@ class Archive(object):
 
     def GET(self, date_str):
         date = datetime.datetime.strptime(date_str, '%Y-%m-%d')
+        web.http.expires(datetime.timedelta(weeks=100))
         web.http.modified(date=date)
         archive_file = os.path.join(
             archive_dir, date.strftime('%Y-%m'), date_str + '.md'
