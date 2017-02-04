@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import codecs
 import datetime
+import hashlib
 import os
 import re
 import web
@@ -19,7 +20,8 @@ render = web.template.render(template_dir,
 
 urls = (
     '/', 'Index',
-    '/archive/(\d\d\d\d-\d\d-\d\d)', 'Archive'
+    '/archive/(\d\d\d\d-\d\d-\d\d)', 'Archive',
+    '/favicon.ico', 'Favicon'
 )
 
 
@@ -78,6 +80,14 @@ class Archive(object):
             archive_lang = self._read_archive(archive)
         return render.archive(archive_lang.iteritems())
 
+
+class Favicon(object):
+    def GET(self):
+        web.header('Content-Type', 'images/x-icon')  # Set the Header
+        path = os.path.join(module_dir, 'static', 'favicon.ico')
+        print path
+        web.http.modified(etag=hashlib.sha224(path).hexdigest())
+        return open(path, "rb").read()
 
 def main():
     web.config.debug = False
