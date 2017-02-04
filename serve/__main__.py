@@ -25,13 +25,19 @@ urls = (
 
 class Index(object):
     def _archive_paths(self):
+        l = []
         for root, dirs, files in os.walk(archive_dir):
             for f in files:
                 if f.endswith(".md"):
-                    yield 'archive/%s' % f.replace('.md', '')
+                    l.append('archive/%s' % f.replace('.md', ''))
+        l.reverse()
+        return l
 
     def GET(self):
-        paths = reversed(list(self._archive_paths()))
+        paths = self._archive_paths()
+        date = datetime.datetime.strptime(
+            paths[0].split('/')[-1], '%Y-%m-%d')
+        web.http.modified(date=date)
         return render.index(paths)
 
 
@@ -63,10 +69,10 @@ class Archive(object):
 
     def GET(self, date_str):
         date = datetime.datetime.strptime(date_str, '%Y-%m-%d')
+        web.http.modified(date=date)
         archive_file = os.path.join(
             archive_dir, date.strftime('%Y-%m'), date_str + '.md'
         )
-
         with codecs.open(archive_file, 'r',
                          encoding='utf-8') as archive:
             archive_lang = self._read_archive(archive)
