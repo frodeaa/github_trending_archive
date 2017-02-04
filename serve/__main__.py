@@ -74,6 +74,7 @@ class Archive(object):
 
 
 def main():
+    web.config.debug = False
     app = web.application(urls, globals())
     app.run()
 

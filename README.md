@@ -14,3 +14,11 @@ The repository follows:
 Add ``bin/archive-trending`` to your crontab.
 
     crontab -l | { cat; echo "0 0 * * * $(pwd)/bin/archive-trending"; } | crontab -
+
+## Run server
+
+Make the archive available from HTTP by running ``bin/serve``. It will be
+available on http://0.0.0.0:8080. The default port can be change by
+setting environment ``PORT``
+
+    $ PORT=8000 ./bin/serve

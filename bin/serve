@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#
+# Serve archived archives over http
+#
+#
+
+ROOT="$(git rev-parse --show-toplevel)"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+VIRUAL_ENV_PATH="${DIR}/env"
+
+if [ ! -d "${VIRUAL_ENV_PATH}" ];
+then
+  virtualenv --quiet "${VIRUAL_ENV_PATH}"
+fi
+
+source "${VIRUAL_ENV_PATH}/bin/activate"
+
+pip install --quiet --requirement "${DIR}/requirements.txt"
+
+python serve
