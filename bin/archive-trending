@@ -22,7 +22,7 @@ source "${VIRUAL_ENV_PATH}/bin/activate"
 
 pip install --quiet --requirement "${DIR}/requirements.txt"
 
-git pull
+git pull --quiet
 
 echo "###${TODAY}" > "${OUTPUT_FILE_MD}"
 grep 'github.com/trending?l' "${README}" | sort | \
