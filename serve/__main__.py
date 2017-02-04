@@ -78,7 +78,7 @@ class Archive(object):
         with codecs.open(archive_file, 'r',
                          encoding='utf-8') as archive:
             archive_lang = self._read_archive(archive)
-        return render.archive(archive_lang.iteritems())
+        return render.archive(archive_lang.iteritems(), date_str)
 
 
 class Favicon(object):
