@@ -1,0 +1,10 @@
+$def with (archives)
+    $for lang, projects in archives:
+    <h4>$lang</h4>
+    <ul>
+        $for project in projects:
+        <li>
+            <a href="$project['url']">$project['title']</a>
+            $project['description']
+        </li>
+    </ul>

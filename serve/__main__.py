@@ -1,6 +1,8 @@
-import glob
+# -*- coding: utf-8 -*-
+import codecs
+import datetime
 import os
-import sys
+import re
 import web
 
 t_globals = {
@@ -17,6 +19,7 @@ render = web.template.render(template_dir,
 
 urls = (
     '/', 'Index',
+    '/archive/(\d\d\d\d-\d\d-\d\d)', 'Archive'
 )
 
 
@@ -32,10 +35,48 @@ class Index(object):
         return render.index(paths)
 
 
-def main(args):
+class Archive(object):
+    @staticmethod
+    def _url(line):
+        return re.search('\[([^\]]+)\]\(([^)]+)\)', line)
+
+    @staticmethod
+    def _project(m, l):
+        return {
+            'url': m.group(1),
+            'title': m.group(2),
+            'description': l[m.end():].strip()
+        }
+
+    def _read_archive(self, archive):
+        archive_lang = {}
+        lang = []
+        for line in archive:
+            line = line.strip()
+            if line.startswith('####'):
+                lang = archive_lang[line[4:]] = []
+            elif line.startswith('* ['):
+                line = line[2:]
+                lang.append(self._project(
+                    self._url(line), line))
+        return archive_lang
+
+    def GET(self, date_str):
+        date = datetime.datetime.strptime(date_str, '%Y-%m-%d')
+        archive_file = os.path.join(
+            archive_dir, date.strftime('%Y-%m'), date_str + '.md'
+        )
+
+        with codecs.open(archive_file, 'r',
+                         encoding='utf-8') as archive:
+            archive_lang = self._read_archive(archive)
+        return render.archive(archive_lang.iteritems())
+
+
+def main():
     app = web.application(urls, globals())
     app.run()
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    main()
