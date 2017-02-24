@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import codecs
 import datetime
-import hashlib
 import os
 import re
 import web
@@ -70,8 +69,18 @@ class Archive(object):
                     self._url(line), line))
         return archive_lang
 
+    def _next_link_tuple(self, date):
+        next_date = date + datetime.timedelta(days=1)
+        next_date_str = next_date_str = next_date.strftime('%Y-%m-%d')
+        next_link = os.path.join('/archive', next_date_str)
+        if next_date.date() >= datetime.datetime.utcnow().date():
+            next_date_str = None
+        return next_date_str, next_link
+
     def GET(self, date_str):
         date = datetime.datetime.strptime(date_str, '%Y-%m-%d')
+        next_date_str, next_link = self._next_link_tuple(date)
+
         web.http.expires(datetime.timedelta(weeks=100))
         web.http.modified(date=date)
         archive_file = os.path.join(
@@ -80,7 +89,9 @@ class Archive(object):
         with codecs.open(archive_file, 'r',
                          encoding='utf-8') as archive:
             archive_lang = self._read_archive(archive)
-        return render.archive(archive_lang.iteritems(), date_str)
+
+        return render.archive(archive_lang.iteritems(),
+                              date_str, next_date_str, next_link)
 
 
 def main():

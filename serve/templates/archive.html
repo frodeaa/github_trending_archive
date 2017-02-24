@@ -1,11 +1,14 @@
-$def with (archives, day)
+$def with (archives, day, next_day, next_day_link)
     <h1><a href="/" title="Trending Archives">$day</a></h1>
+
     $for lang, projects in archives:
-    <h2>$lang</h2>
-    <ul>
-        $for project in projects:
-        <li>
-            <a href="$project['url']">$:project['title']</a>
-            $:project['description']
-        </li>
-    </ul>
+      <h2>$lang</h2>
+      <ul>
+          $for project in projects:
+          <li>
+              <a href="$project['url']">$:project['title']</a>
+              $:project['description']
+          </li>
+      </ul>
+    $if next_day:
+      <h4 style="float:right;"><a href="$next_day_link">$next_day</a></h4>
