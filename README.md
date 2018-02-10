@@ -5,6 +5,7 @@ Archive of the GitHub daily trending git repositories
 The repository follows:
 
  - [go](https://github.com/trending?l=go)
+ - [rust](https://github.com/trending?l=rust)
  - [java](https://github.com/trending?l=java)
  - [javascript](https://github.com/trending?l=javascript)
  - [python](https://github.com/trending?l=python)
