@@ -17,4 +17,4 @@ source "${VIRUAL_ENV_PATH}/bin/activate"
 
 pip install --quiet --requirement "${DIR}/requirements.txt"
 
-python serve
+python serve "$@"
