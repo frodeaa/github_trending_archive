@@ -1,0 +1,14 @@
+[Service]
+WorkingDirectory=/home/chip/github_trending_archive
+ExecStart=/home/chip/github_trending_archive/bin/serve 127.0.0.1
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=github_trending_archive
+User=github_trending_archive 
+Group=github_trending_archive 
+Environment=
+
+[Install]
+WantedBy=multi-user.target
+
