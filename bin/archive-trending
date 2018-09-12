@@ -24,7 +24,7 @@ pip install --quiet --requirement "${DIR}/requirements.txt"
 
 git pull --quiet
 
-echo "###${TODAY}" > "${OUTPUT_FILE_MD}"
+echo "### ${TODAY}" > "${OUTPUT_FILE_MD}"
 grep 'github.com/trending?l' "${README}" | sort | \
   cut -d '[' -f2 | cut -d ']' -f 1 | tr '\n' ' ' | \
     xargs python "${ROOT}/scrape_trending" >> "${OUTPUT_FILE_MD}"

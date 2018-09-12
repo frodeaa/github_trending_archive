@@ -22,7 +22,7 @@ def trending(content):
 
 def markdown(trends, lang):
     fmt = u'* [https://github.com%s](%s) %s'
-    print((u'\n####%s' % lang).encode('utf-8'))
+    print((u'\n#### %s' % lang).encode('utf-8'))
     for t in trends:
         print((fmt % t).rstrip().encode('utf-8'))
 
