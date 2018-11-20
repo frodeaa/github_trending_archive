@@ -15,8 +15,8 @@ __attrs = {
 def trending(content):
     soup = BeautifulSoup(content)
     for li in soup.findAll('li', __attrs):
-        yield (li.h3.a.get('href'),
-               li.h3.a.get("href")[1:],
+        yield (li.div.h3.a.get('href'),
+               li.div.h3.a.get("href")[1:],
                "".join(li.p.text.strip().split('\n')) if li.p else '')
 
 
