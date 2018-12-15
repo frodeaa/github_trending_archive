@@ -95,17 +95,18 @@ class Archive(object):
                     self._url(line), line))
         return archive_lang
 
-    def _next_link_tuple(self, date):
-        next_date = date + datetime.timedelta(days=1)
-        next_date_str = next_date_str = next_date.strftime('%Y-%m-%d')
-        next_link = os.path.join('/archive', next_date_str)
-        if next_date.date() >= datetime.datetime.utcnow().date():
-            next_date_str = None
-        return next_date_str, next_link
+    def _link_tuple(self, date, delta_days):
+        link_date = date + datetime.timedelta(days=delta_days)
+        link_date_str = link_date.strftime('%Y-%m-%d')
+        next_link = os.path.join('/archive', link_date_str)
+        if link_date.date() >= datetime.datetime.utcnow().date():
+            link_date_str = None
+        return link_date_str, next_link
 
     def GET(self, date_str):
         date = datetime.datetime.strptime(date_str, '%Y-%m-%d')
-        next_date_str, next_link = self._next_link_tuple(date)
+        prev_date_str, prev_link = self._link_tuple(date, 1)
+        next_date_str, next_link = self._link_tuple(date, -1)
 
         web.http.expires(datetime.timedelta(weeks=100))
         web.http.modified(date=date)
@@ -117,7 +118,9 @@ class Archive(object):
             archive_lang = self._read_archive(archive)
 
         return gzip_response(render.archive(archive_lang.iteritems(),
-                                            date_str, next_date_str, next_link))
+                                            date_str,
+                                            next_date_str, next_link,
+                                            prev_date_str, prev_link))
 
 
 def main():
