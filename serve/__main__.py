@@ -55,6 +55,7 @@ class Index(object):
             for f in files:
                 if f.endswith(".md"):
                     l.append('archive/%s' % f.replace('.md', ''))
+        list.sort(l)
         l.reverse()
         return l
 
