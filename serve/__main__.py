@@ -50,14 +50,14 @@ def gzip_response(resp):
 
 class Index(object):
     def _archive_paths(self):
-        l = []
+        days = []
         for root, dirs, files in os.walk(archive_dir):
             for f in files:
                 if f.endswith(".md"):
-                    l.append('archive/%s' % f.replace('.md', ''))
-        list.sort(l)
-        l.reverse()
-        return l
+                    days.append('archive/%s' % f.replace('.md', ''))
+        list.sort(days)
+        days.reverse()
+        return days
 
     def GET(self):
         paths = self._archive_paths()
