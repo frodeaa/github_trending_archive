@@ -105,8 +105,8 @@ class Archive(object):
 
     def GET(self, date_str):
         date = datetime.datetime.strptime(date_str, '%Y-%m-%d')
-        prev_date_str, prev_link = self._link_tuple(date, 1)
-        next_date_str, next_link = self._link_tuple(date, -1)
+        prev_date_str, prev_link = self._link_tuple(date, -1)
+        next_date_str, next_link = self._link_tuple(date, 1)
 
         web.http.expires(datetime.timedelta(weeks=100))
         web.http.modified(date=date)
@@ -119,8 +119,8 @@ class Archive(object):
 
         return gzip_response(render.archive(archive_lang.iteritems(),
                                             date_str,
-                                            next_date_str, next_link,
-                                            prev_date_str, prev_link))
+                                            prev_date_str, prev_link,
+                                            next_date_str, next_link))
 
 
 def main():

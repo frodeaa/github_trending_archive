@@ -1,4 +1,4 @@
-$def with (archives, day, next_day, next_day_link, prev_day, prev_day_link)
+$def with (archives, day, next_text, next_link, prev_text, prev_link)
     <h1><a href="/" title="Trending Archives">$day</a></h1>
 
     $for lang, projects in archives:
@@ -10,7 +10,7 @@ $def with (archives, day, next_day, next_day_link, prev_day, prev_day_link)
               $:project['description']
           </li>
       </ul>
-    $if prev_day:
-      <h4 style="float:left;"><a href="$prev_day_link">$prev_day</a></h4>
-    $if next_day:
-      <h4 style="float:right;"><a href="$next_day_link">$next_day</a></h4>
+    $if prev_text:
+      <h4 style="float:left;"><a href="$prev_link">$prev_text</a></h4>
+    $if next_text:
+      <h4 style="float:right;"><a href="$next_link">$next_text</a></h4>
