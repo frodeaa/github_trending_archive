@@ -8,17 +8,18 @@ from requests.adapters import HTTPAdapter
 from BeautifulSoup import BeautifulSoup
 
 __attrs = {
-    'class': lambda x: x and 'd-block' in x.split()
+    'class': 'col-9 text-gray my-1 pr-4'
 }
 
 
 def trending(content):
     soup = BeautifulSoup(content)
-    repoList = soup.find('ol', {'class': 'repo-list'})
-    for li in repoList.findAll('li', __attrs):
-        yield (li.div.h3.a.get('href'),
-               li.div.h3.a.get("href")[1:],
-               "".join(li.p.text.strip().split('\n')) if li.p else '')
+    repoList = soup.find('div', {'class': 'Box'})
+    for desc in repoList.findAll('p', __attrs):
+        article = desc.parent
+        yield (article.h1.a.get('href'),
+               article.h1.a.get("href")[1:],
+               "".join(desc.text.strip().split('\n')) if desc else '')
 
 
 def markdown(trends, lang):
