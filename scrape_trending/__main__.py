@@ -5,20 +5,17 @@ import requests
 from requests.packages.urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
 
-from BeautifulSoup import BeautifulSoup
-
-__attrs = {
-    'class': lambda x: x and 'd-block' in x.split()
-}
+from bs4 import BeautifulSoup
 
 
 def trending(content):
-    soup = BeautifulSoup(content)
-    repoList = soup.find('ol', {'class': 'repo-list'})
-    for li in repoList.findAll('li', __attrs):
-        yield (li.div.h3.a.get('href'),
-               li.div.h3.a.get("href")[1:],
-               "".join(li.p.text.strip().split('\n')) if li.p else '')
+    soup = BeautifulSoup(content, 'html5lib')
+    for article in soup.find_all('article', {'class': 'Box-row'}):
+        yield (article.h1.a.get('href'),
+               article.h1.a.get('href')[1:],
+               ''.join(
+                   article.p.text.strip().split('\n')
+               ) if article.p else '')
 
 
 def markdown(trends, lang):
