@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import codecs
-import cStringIO
 import datetime
-import gzip
 import os
 import re
 import web
@@ -16,8 +14,6 @@ template_dir = os.path.join(module_dir, 'templates')
 archive_dir = os.path.join(os.path.join(
     module_dir, os.path.pardir), 'archive')
 
-gzip_pat = re.compile('^Mozilla/[5,6,7,8,9]|.*MSIE [6,7,8,9].*')
-
 render = web.template.render(template_dir,
                              base='base', globals=t_globals)
 
@@ -25,27 +21,6 @@ urls = (
     '/', 'Index',
     '/archive/(\d\d\d\d-\d\d-\d\d)', 'Archive'
 )
-
-
-def gzip_response(resp):
-    resp = str(resp)
-    accepts = web.ctx.env.get('HTTP_ACCEPT_ENCODING', None)
-    if accepts and accepts.find('gzip') > -1:
-        browser = web.ctx.env.get('HTTP_USER_AGENT', None)
-        if browser and gzip_pat.match(browser):
-            # ok to compress for this browser
-            web.webapi.header('Content-Encoding', 'gzip')
-            zbuf = cStringIO.StringIO()
-            zfile = gzip.GzipFile(mode='wb', fileobj=zbuf,
-                                  compresslevel=9)
-            zfile.write(resp)
-            zfile.close()
-            data = zbuf.getvalue()
-            web.webapi.header('Content-Length', str(len(data)))
-            web.webapi.header('Vary', 'Accept-Encoding', unique=True)
-            # don't vary by user-agent, defeats caching
-            return data
-    return resp
 
 
 class Index(object):
@@ -66,7 +41,7 @@ class Index(object):
         web.http.expires(
             (date + datetime.timedelta(days=1)) - datetime.datetime.utcnow())
         web.http.modified(date=date)
-        return gzip_response(render.index(paths))
+        return render.index(paths)
 
 
 class Archive(object):
@@ -117,10 +92,10 @@ class Archive(object):
                          encoding='utf-8') as archive:
             archive_lang = self._read_archive(archive)
 
-        return gzip_response(render.archive(archive_lang.iteritems(),
-                                            date_str,
-                                            prev_date_str, prev_link,
-                                            next_date_str, next_link))
+        return render.archive(archive_lang.items(),
+                              date_str,
+                              prev_date_str, prev_link,
+                              next_date_str, next_link)
 
 
 def main():

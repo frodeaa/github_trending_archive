@@ -5,8 +5,8 @@ Restart=always
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=github_trending_archive
-User=github_trending_archive 
-Group=github_trending_archive 
+User=github_trending_archive
+Group=github_trending_archive
 Environment=
 
 [Install]

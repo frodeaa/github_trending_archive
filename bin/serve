@@ -10,11 +10,11 @@ VIRUAL_ENV_PATH="${DIR}/env"
 
 if [ ! -d "${VIRUAL_ENV_PATH}" ];
 then
-  virtualenv --quiet "${VIRUAL_ENV_PATH}"
+  python3 -m venv "${VIRUAL_ENV_PATH}"
 fi
 
 source "${VIRUAL_ENV_PATH}/bin/activate"
 
-pip install --quiet --requirement "${DIR}/requirements.txt"
+python3 -m pip install --quiet --requirement "${DIR}/requirements.txt"
 
-python serve "$@"
+python3 serve "$@"
