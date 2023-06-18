@@ -11,15 +11,15 @@ from bs4 import BeautifulSoup
 def trending(content):
     soup = BeautifulSoup(content, 'html5lib')
     for article in soup.find_all('article', {'class': 'Box-row'}):
-        yield (article.h1.a.get('href'),
-               article.h1.a.get('href')[1:],
+        yield (article.h2.a.get('href')[1:],
+               article.h2.a.get('href'),
                ''.join(
                    article.p.text.strip().split('\n')
                ) if article.p else '')
 
 
 def markdown(trends, lang):
-    fmt = u'* [https://github.com%s](%s) %s'
+    fmt = u'* [%s](https://github.com%s) %s'
     print((u'\n#### %s' % lang))
     for t in trends:
         print((fmt % t).rstrip())

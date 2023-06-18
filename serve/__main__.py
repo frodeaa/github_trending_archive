@@ -51,9 +51,13 @@ class Archive(object):
 
     @staticmethod
     def _project(m, l):
+        url, title = m.group(1), m.group(2)
+        if title.startswith("https://github.com"):
+            # Newer markdown have link fixed
+            url, title = title, url
         return {
-            'url': m.group(1),
-            'title': m.group(2),
+            'url': url,
+            'title': title,
             'description': l[m.end():].strip()
         }
 
