@@ -7,7 +7,7 @@ $def with (archives, day, next_text, next_link, prev_text, prev_link)
           $for project in projects:
           <li>
               <a href="$project['url']">$:project['title']</a>
-              $project['description']
+              $:project['description']
           </li>
       </ul>
     $if prev_text:
